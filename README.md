@@ -1,130 +1,137 @@
-# Agenda de Banho para Pets (Java)
+# Agenda de Banho para Pets — Resumo e Conceitos do Código
 
-Este projeto é um programa simples em Java para gerenciar agendamentos de banho (com ou sem tosa) para pets. Ele funciona no console (linha de comando) e permite:
+## Resumo rápido (o que o programa faz)
 
-- Agendar um banho para um horário específico
-- Consultar todos os horários e ver quais estão livres/ocupados
+Este programa de console em Java gerencia uma agenda simples com 10 horários (0 a 9) para banho de pets. Você pode:
+- Agendar um banho (com hidratação ou com tosa)
+- Consultar a agenda (ver horários livres/ocupados)
 - Editar um agendamento (trocar nome do pet e do dono)
 - Excluir um agendamento
 
-A agenda tem 10 horários numerados de 0 a 9.
+Tudo acontece pelo menu no terminal.
 
 ---
 
 ## Como executar
 
-1. Tenha o Java instalado (JDK 8+).
-2. Compile os arquivos `.java` (no mesmo diretório):
+1. Instale o Java (JDK 8 ou superior).
+2. No diretório do projeto, compile:
 ```bash
 javac *.java
 ```
-3. Execute o programa principal:
+3. Execute:
 ```bash
 java Principal
 ```
 
 ---
 
-## Como usar (passo a passo)
+## Conceitos do código explicados (para iniciantes)
 
-Ao rodar, o programa mostra um menu:
+A ideia desta seção é explicar os blocos básicos de programação usados no projeto, com linguagem simples e dizendo onde aparecem.
 
-```
-Menu:
-1 - Agendar banho
-2 - Consultar agenda
-3 - Editar agendamento
-4 - Excluir agendamento
-5 - Sair
-```
+- **Classe**: é um “molde” que descreve um tipo de coisa do mundo real no código.
+  - Onde aparece: `Agendamento`, `BanhoSimples`, `BanhoComTosa`, `AgendaManager`, `Principal`.
 
-- **1 - Agendar banho**: você informa dados do pet e do dono, escolhe o horário (0 a 9) e o tipo de serviço (Hidratação ou Tosa). Se o horário estiver livre, o agendamento é salvo.
-- **2 - Consultar agenda**: mostra os 10 horários e o que está marcado em cada um.
-- **3 - Editar agendamento**: você escolhe um horário e pode alterar o nome do pet e do dono.
-- **4 - Excluir agendamento**: remove o agendamento de um horário.
-- **5 - Sair**: fecha o programa.
+- **Objeto**: é um “exemplar” criado a partir de uma classe (como um produto feito a partir do molde).
+  - Onde aparece: quando você agenda, o programa cria um objeto de `BanhoSimples` ou `BanhoComTosa`.
 
-Dicas:
-- Os horários vão de 0 a 9. Se você digitar algo fora desse intervalo, o programa avisa.
-- Não é possível agendar dois banhos no mesmo horário.
+- **Atributos**: são as informações guardadas dentro de um objeto (campos/variáveis da classe).
+  - Onde aparece: em `Agendamento` há `nomePet`, `especie`, `nomeDono`, `telefoneDono`, `horario`, `servicoAdicional`.
+
+- **Métodos**: são ações ou funções que a classe/objeto pode executar.
+  - Onde aparece: `AgendaManager.agendar(...)`, `listar()`, `editar(...)`, `excluir(...)` são métodos.
+
+- **Construtor**: método especial que cria e prepara um objeto, definindo seus primeiros valores.
+  - Onde aparece: `Agendamento(...)` recebe os dados do agendamento; `BanhoSimples(...)` e `BanhoComTosa(...)` chamam o construtor da classe-mãe para já definir o serviço.
+
+- **Palavra-chave `new`**: cria um novo objeto na memória.
+  - Onde aparece: em `Principal`, ao agendar, o código faz `new BanhoSimples(...)` ou `new BanhoComTosa(...)`.
+
+- **Herança (`extends`)**: permite que uma classe reaproveite código de outra classe.
+  - Onde aparece: `BanhoSimples extends Agendamento` e `BanhoComTosa extends Agendamento`. Assim, elas herdam os atributos e métodos de `Agendamento` e só mudam o que é necessário (o serviço adicional).
+
+- **`@Override`**: indica que um método foi “redefinido” na classe filha para ter um comportamento próprio.
+  - Onde aparece: em `BanhoSimples` e `BanhoComTosa`, o método `toString()` é sobrescrito para adicionar o tipo de serviço ao texto.
+
+- **`toString()`**: define como um objeto vira texto quando precisamos imprimir na tela.
+  - Onde aparece: em `Agendamento` (monta um texto com os dados) e é complementado nas classes filhas.
+
+- **`static`**: significa que algo pertence à classe, e não a um objeto específico.
+  - Onde aparece: em `AgendaManager`, tanto o array `agenda` quanto os métodos (`agendar`, `listar`, etc.) são `static`. Isso permite chamar `AgendaManager.listar()` sem criar um objeto `AgendaManager`.
+
+- **Array**: é uma lista de tamanho fixo para guardar vários elementos do mesmo tipo.
+  - Onde aparece: `Agendamento[] agenda = new Agendamento[10];` guarda até 10 agendamentos (posições 0 a 9).
+
+- **Índice (posição no array)**: cada espaço no array tem um número. Aqui, usamos de 0 a 9 para representar horários.
+  - Onde aparece: quando você escolhe o horário, o programa usa esse número como posição no array.
+
+- **Encapsulamento (palavras `public` e `private`)**: controla o que pode ser acessado de fora da classe.
+  - Onde aparece: em `Agendamento`, os atributos são `private` (protegem os dados) e só podem ser lidos/mudados pelos métodos (getters/setters) que são `public`.
+
+- **`this`**: palavra usada dentro da classe para se referir ao próprio objeto (diferenciar atributo de parâmetro).
+  - Onde aparece: no construtor de `Agendamento` e nos setters (`this.nomePet = nomePet;`).
+
+- **Getters e Setters**: métodos para ler (get) e alterar (set) os atributos de forma segura.
+  - Onde aparece: em `Agendamento`, por exemplo `getNomePet()` e `setNomePet(...)`.
+
+- **`import`**: traz classes de outras “caixas de ferramentas” da linguagem.
+  - Onde aparece: em `Principal`, `import java.util.Scanner;` para ler dados digitados.
+
+- **`Scanner`**: objeto que lê o que o usuário digita no console.
+  - Onde aparece: em `Principal`, para pegar nomes, telefone e horário.
+
+- **`switch` / `case`**: escolhe o que fazer com base em um número/opção.
+  - Onde aparece: em `Principal`, decide entre agendar, listar, editar, excluir ou sair.
+
+- **`if` / `else`**: toma decisões (se algo é verdadeiro, faz X; senão, faz Y).
+  - Onde aparece: em `AgendaManager.agendar(...)` verifica se a posição é válida e se está livre; em `Principal`, escolhe entre `BanhoSimples` ou `BanhoComTosa`.
+
+- **`do { ... } while (condição);`**: repete o menu até o usuário escolher sair.
+  - Onde aparece: em `Principal`, mantém o programa rodando até a opção 5.
+
+- **Tipos de dado**: `String` (textos), `int` (números inteiros) e `boolean` (verdadeiro/falso, implicitamente nas condições).
+  - Onde aparece: `String` para nomes/telefone/horário textual; `int` para escolher opções e índices.
 
 ---
 
-## Explicação do código (para iniciantes)
+## O que cada arquivo faz
 
-Abaixo está um resumo simples do que cada arquivo faz.
-
-### `Principal.java`
-- É o ponto de entrada do programa (onde tudo começa): método `main`.
-- Mostra o menu e usa um `Scanner` para ler o que o usuário digita.
-- Dependendo da opção escolhida (1 a 5), chama métodos da classe `AgendaManager` (agendar, listar, editar, excluir).
-- Quando você escolhe agendar, o programa cria um objeto que representa o agendamento (pode ser `BanhoSimples` ou `BanhoComTosa`).
-
-### `AgendaManager.java`
-- É como um “controlador” da agenda.
-- Guarda os agendamentos em um array de tamanho 10: `Agendamento[]`.
-- Métodos principais:
-  - `agendar(ag, posicao)`: coloca um agendamento no horário indicado, se estiver livre.
-  - `listar()`: mostra todos os horários (livres ou ocupados).
-  - `editar(posicao, novoNomePet, novoNomeDono)`: altera nomes do pet e do dono.
-  - `excluir(posicao)`: apaga o agendamento do horário.
-
-### `Agendamento.java`
-- Representa os dados de um agendamento: nome do pet, espécie, nome e telefone do dono, horário e o serviço adicional (se houver).
-- É uma classe base (ou “mãe”). Outras classes especiais herdam dela.
-- Possui getters e setters (métodos para ler/alterar os valores) e um `toString()` que monta um texto para mostrar na tela.
-
-### `BanhoSimples.java` e `BanhoComTosa.java`
-- São tipos específicos de agendamento que herdam de `Agendamento`.
-- `BanhoSimples` define o serviço como “Hidratação”.
-- `BanhoComTosa` define o serviço como “Tosa”.
-- Herança permite reaproveitar o código da classe base e mudar apenas o que é diferente.
+- `Principal.java`: mostra o menu, lê os dados do usuário e chama os métodos da agenda.
+- `AgendaManager.java`: guarda a lista de agendamentos (array) e oferece métodos para agendar, listar, editar e excluir.
+- `Agendamento.java`: define os dados (atributos) de um agendamento e como ele vira texto (`toString`).
+- `BanhoSimples.java`: um tipo de agendamento que define o serviço como “Hidratação”.
+- `BanhoComTosa.java`: um tipo de agendamento que define o serviço como “Tosa”.
 
 ---
 
-## Conceitos de programação usados (explicado de forma simples)
+## Fluxo do programa (resumo)
 
-- **Classe**: modelo que descreve um tipo de objeto. Ex.: `Agendamento` é o modelo de um agendamento.
-- **Objeto**: uma instância (um “exemplar”) de uma classe. Ao agendar um banho, o programa cria um objeto com os dados.
-- **Atributos**: as informações do objeto (nome do pet, telefone, etc.).
-- **Métodos**: ações/funções que podemos executar (agendar, editar, excluir).
-- **Array**: uma lista de tamanho fixo. Aqui, temos 10 posições (0 a 9) para os horários.
-- **Herança**: quando uma classe aproveita o código de outra. `BanhoSimples` e `BanhoComTosa` aproveitam tudo de `Agendamento` e só mudam o tipo de serviço.
-- **toString()**: método especial que diz como mostrar um objeto como texto. Ajuda na hora de imprimir na tela.
+1. O programa inicia em `Principal.main` e mostra o menu.
+2. O usuário escolhe uma opção.
+3. Para agendar, o programa cria um objeto (`new BanhoSimples` ou `new BanhoComTosa`) e guarda no array da `AgendaManager` na posição escolhida (0 a 9).
+4. Para listar, mostra cada posição do array e, se houver agendamento, imprime o `toString()` do objeto.
+5. Para editar/excluir, usa o índice informado e altera ou limpa a posição no array.
+6. Repete o menu até o usuário escolher sair.
 
 ---
 
-## Exemplos rápidos
+## Exemplos de uso do menu
 
 - Agendar banho simples no horário 3:
-  - Opção 1 → preencha os dados → horário 3 → serviço 1 (Hidratação)
-
-- Verificar agenda:
+  - Opção 1 → preencher dados → horário 3 → serviço 1 (Hidratação)
+- Ver agenda:
   - Opção 2
-
-- Editar o horário 3:
-  - Opção 3 → digite 3 → informe os novos nomes
-
-- Excluir o horário 3:
-  - Opção 4 → digite 3
+- Editar horário 3:
+  - Opção 3 → digitar 3 → informar novos nomes
+- Excluir horário 3:
+  - Opção 4 → digitar 3
 
 ---
 
-## Possíveis melhorias
+## Dicas e melhorias
 
-- Validar melhor o telefone (formato)
-- Permitir mudar o tipo de serviço ao editar
-- Salvar os dados em arquivo para não perder quando fechar o programa
-- Aumentar a quantidade de horários ou permitir escolher o tamanho da agenda
-
----
-
-## Estrutura dos arquivos
-
-- `Principal.java`: menu e entrada do usuário
-- `AgendaManager.java`: lógica da agenda (agendar/listar/editar/excluir)
-- `Agendamento.java`: dados do agendamento (classe base)
-- `BanhoSimples.java`: agendamento com hidratação
-- `BanhoComTosa.java`: agendamento com tosa
-
-Se tiver dúvidas, fique à vontade para melhorar o código e comentar!
+- Validar melhor o telefone (formato).
+- Permitir mudar o tipo de serviço ao editar.
+- Salvar em arquivo para não perder os dados ao encerrar o programa.
+- Aumentar a quantidade de horários ou permitir configurar o tamanho da agenda.
